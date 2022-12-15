@@ -1,0 +1,19 @@
+/run/initialize
+
+/gps/particle gamma
+/gps/position 0 0 0
+/gps/number 1
+/gps/energy 20 MeV
+/gps/ang/type iso
+#/gps/direction 0 -1 0
+
+
+/tracking/verbose 0
+
+#/score/create/realWorldLogVol wall1
+#/score/quantity/volumeFlux flux
+#/score/close
+
+/run/beamOn 30
+
+#/score/dumpQuantityToFile wall1 flux result.txt

@@ -2,9 +2,9 @@
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "globals.hh"
+#include "G4GeneralParticleSource.hh"
 
 class G4Event;
-class G4GeneralParticleSource;
 
 class PrimaryGeneratorAction :public G4VUserPrimaryGeneratorAction
 {
@@ -14,4 +14,5 @@ public:
 	void GeneratePrimaries(G4Event* anEvent);
 private:
 	G4GeneralParticleSource* fgps;
+
 };

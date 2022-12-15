@@ -2,15 +2,26 @@
 #include "PhysicsList.hh"
 #include "ActionInitialization.hh"
 
+
 #include "G4UIExecutive.hh"
 #include "G4UImanager.hh"
 #include "G4MTRunManager.hh"
 #include "G4VisExecutive.hh"
 #include "G4VisManager.hh"
+#include "G4ScoringManager.hh"
 
 #include <time.h>
 #include "Randomize.hh"
 
+#include "RunAction.hh"
+#include "ScorerRun.hh"
+#include "BiasinglWorld.hh"
+#include "BiasingOperator.hh"
+#include "BiasingOperation.hh"
+
+class DetectorConstruction;
+class PhysicsList;
+class ActionInitialization;
 
 int main(int argc, char** argv)
 {
@@ -23,15 +34,19 @@ int main(int argc, char** argv)
 
 	G4MTRunManager* runmanager = new G4MTRunManager;
 
+	G4ScoringManager* scoringmanager = G4ScoringManager::GetScoringManager();
 
 	if (argc == 3) runmanager->SetNumberOfThreads(atoi(argv[2]));
 	else runmanager->SetNumberOfThreads(1);
 
+	DetectorConstruction* detectorconstrcution = new DetectorConstruction;
+	ParallelWorld* parallelworld = new ParallelWorld;
+	parallelworld->setNBin(6, 6, 6);
+	detectorconstrcution->RegisterParallelWorld(parallelworld);
 
-	runmanager->SetUserInitialization(new DetectorConstruction);
+	runmanager->SetUserInitialization(detectorconstrcution);
 	runmanager->SetUserInitialization(new PhysicsList);
 	runmanager->SetUserInitialization(new ActionInitialization);
-
 
 	G4VisManager* vismanager = new G4VisExecutive;
 	vismanager->Initialize();
@@ -51,5 +66,4 @@ int main(int argc, char** argv)
 
 	delete vismanager;
 	delete runmanager;
-	return 0;
 }
