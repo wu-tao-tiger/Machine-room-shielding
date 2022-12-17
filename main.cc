@@ -19,6 +19,11 @@
 #include "BiasingOperator.hh"
 #include "BiasingOperation.hh"
 
+
+#include "ScoringWorld.hh"
+#include "ScoringMessenger.hh"
+#include "BiasingMessenger.hh"
+
 class DetectorConstruction;
 class PhysicsList;
 class ActionInitialization;
@@ -40,9 +45,6 @@ int main(int argc, char** argv)
 	else runmanager->SetNumberOfThreads(1);
 
 	DetectorConstruction* detectorconstrcution = new DetectorConstruction;
-	ParallelWorld* parallelworld = new ParallelWorld;
-	parallelworld->setNBin(6, 6, 6);
-	detectorconstrcution->RegisterParallelWorld(parallelworld);
 
 	runmanager->SetUserInitialization(detectorconstrcution);
 	runmanager->SetUserInitialization(new PhysicsList);
