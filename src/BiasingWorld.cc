@@ -26,7 +26,7 @@ void BiasingWorld::Construct()
 	G4LogicalVolume* parallel_world_logical = parallel_world_physical->GetLogicalVolume();
 	G4Box* parallel_world_solid = (G4Box*)parallel_world_logical->GetSolid();
 
-	G4Box* envelope_solid=(G4Box*)G4LogicalVolumeStore::GetInstance()->GetVolume("envelope_logical")->GetSolid();
+	G4Box* envelope_solid = (G4Box*)G4LogicalVolumeStore::GetInstance()->GetVolume(fname)->GetSolid();
 	G4LogicalVolume* envelope_logical = new G4LogicalVolume(envelope_solid, nullptr, "envelope_logical");
 	new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 0), envelope_logical, "envelope_physical", parallel_world_logical, false, 0, true);
 
@@ -35,6 +35,7 @@ void BiasingWorld::Construct()
 	ysize = envelope_solid->GetYHalfLength();
 	zsize = envelope_solid->GetZHalfLength();
 
+	parallel_world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
 	parallel_world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
 
 
@@ -57,11 +58,22 @@ void BiasingWorld::Construct()
 }
 
 
-void BiasingWorld::setNBin(G4int x, G4int y, G4int z)
+void BiasingWorld::setNBin(int x, int* xImp, int y, int* yImp, int z, int* zImp)
 {
 	xbin = x;
 	ybin = y;
 	zbin = z;
+	for (size_t i = 0; i < xbin; i++)
+	{
+		for (size_t j = 0; j < ybin; j++)
+		{
+			for (size_t k = 0; k < zbin; k++)
+			{
+				G4String coordinate = std::to_string(i) + std::to_string(j) + std::to_string(k);
+				fImportanceMap[coordinate] = std::max({ xImp[i],yImp[j],zImp[k] });
+			}
+		}
+	}
 }
 
 G4int BiasingWorld::getCopyNum(G4int i,G4int j,G4int k)
@@ -83,34 +95,7 @@ void BiasingWorld::ConstructSD()
 {
 	BiasingOperator* biasingoperator = new BiasingOperator;
 	
-	std::map<G4String, G4int> a;
-
-
-	for (G4int i = 0; i < xbin; i++)
-	{
-		for (G4int j = 0; j < ybin; j++)
-		{
-			for (G4int k = 0; k < zbin; k++)
-			{
-				if (i == 2 || i == xbin - 3 || j == 2 || j == ybin - 3 || k == 2 || k == zbin - 3)
-				{
-					G4String coordinate = std::to_string(i) + std::to_string(j) + std::to_string(k);
-					a[coordinate] = 1;
-				}
-				if (i == 1 || i == xbin - 2 || j == 1 || j == ybin - 2 || k == 1 || k == zbin - 2)
-				{
-					G4String coordinate = std::to_string(i) + std::to_string(j) + std::to_string(k);
-					a[coordinate] = 4;
-				}
-
-				if (i == 0 || i == xbin - 1 || j == 0 || j == ybin - 1 || k == 0 || k == zbin - 1)
-				{
-					G4String coordinate = std::to_string(i) + std::to_string(j) + std::to_string(k);
-					a[coordinate] = 16;
-				}
-			}
-		}
-	}
-	biasingoperator->setImportance(a);
+	biasingoperator->setImportance(fImportanceMap);
 	biasingoperator->AttachTo(G4LogicalVolumeStore::GetInstance()->GetVolume("zslice_l"));
 }
+

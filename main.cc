@@ -21,8 +21,7 @@
 
 
 #include "ScoringWorld.hh"
-#include "ScoringMessenger.hh"
-#include "BiasingMessenger.hh"
+
 
 class DetectorConstruction;
 class PhysicsList;

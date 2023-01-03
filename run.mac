@@ -1,19 +1,17 @@
 /run/initialize
 
-/gps/particle gamma
-/gps/position 0 0 0
+/gps/particle e-
 /gps/number 1
-/gps/energy 20 MeV
-/gps/ang/type iso
-#/gps/direction 0 -1 0
+/gps/energy 200 keV
 
+/gps/pos/type Plane
+/gps/pos/shape Rectangle
+/gps/pos/centre 969 0 0 mm
+/gps/pos/rot1 0 0 1
+/gps/pos/rot2 0 1 0
+/gps/pos/halfx 65 mm
+/gps/pos/halfy 750 mm
 
-/tracking/verbose 0
+/gps/direction 1 0 0
 
-#/score/create/realWorldLogVol wall1
-#/score/quantity/volumeFlux flux
-#/score/close
-
-/run/beamOn 30
-
-#/score/dumpQuantityToFile wall1 flux result.txt
+/run/beamOn 3000

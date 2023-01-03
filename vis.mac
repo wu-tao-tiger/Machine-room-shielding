@@ -81,4 +81,4 @@
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings
 
-/control/execute run.mac
+#/control/execute run.mac

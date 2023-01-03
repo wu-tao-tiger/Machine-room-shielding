@@ -2,6 +2,8 @@
 
 #include "G4UserRunAction.hh"
 #include "globals.hh"
+#include <vector>
+#include <string>
 
 class G4Run;
 
@@ -16,5 +18,9 @@ public:
 
 	void BeginOfRunAction(const G4Run* run);
 	void EndOfRunAction(const G4Run* run);
+
+
+private:
+	std::vector<G4String> fSDName;
 
 };

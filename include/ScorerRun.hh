@@ -2,11 +2,15 @@
 
 #include "G4Run.hh"
 #include "globals.hh"
+#include <vector>
+#include "G4THitsMap.hh"
+
+class G4StatDouble;
 
 class ScorerRun :public G4Run
 {
 public:
-	ScorerRun();
+	ScorerRun(const std::vector<G4String> mfdName);
 	~ScorerRun();
 
 
@@ -14,25 +18,11 @@ public:
 
 	void Merge(const G4Run* run);
 
-	void DumpAllScorer();
+	void ConstructMFD(const std::vector<G4String>&);
 
-	G4double getError(G4double v, G4double v2)
-	{
-		G4double nOfEvent = GetNumberOfEvent();
-		G4double rms = v2 - std::pow(v, 2) / nOfEvent;
-		G4double error(0);
-		if (rms > 0)
-		{
-			error = std::sqrt(rms) / v;
-		}
-		else
-		{ 
-			error = 0; 
-		}
-		return error;
-	}
+	std::vector<G4THitsMap<G4StatDouble>*> getRunMap() { return fRunMap; }
 
 private:
-	G4double RunFlux;
-	G4double RunFlux2;
+
+	std::vector<G4THitsMap<G4StatDouble>*> fRunMap;
 };

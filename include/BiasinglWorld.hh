@@ -16,18 +16,19 @@ public:
 	void ConstructSD();
 
 
-	void setNBin(G4int x, G4int y, G4int z);
+	void setNBin(int x, int* xImp, int y, int* yImp, int z, int* zImp);
 
 	G4int getCopyNum(G4int i, G4int j, G4int k);
 
 	G4ThreeVector getPosition(G4int i, G4int j, G4int k);
-	//{
-	//	G4double x = (2 * i + 1) * xsize / xbin - xsize;
-	//	G4double y = (2 * j + 1) * ysize / ybin - ysize;
-	//	G4double z = (2 * k + 1) * zsize / zbin - zsize;
-	//	G4ThreeVector pos = G4ThreeVector(x, y, z);
-	//	return pos;
-	//}
+
+	G4bool setName(G4String name) 
+	{
+		fname = name;
+		return true;
+	}
+
+
 private:
 	G4int xbin;
 	G4int ybin;
@@ -35,4 +36,6 @@ private:
 	G4double xsize;
 	G4double ysize;
 	G4double zsize;
+	G4String fname;
+	std::map<G4String, int> fImportanceMap;
 };
