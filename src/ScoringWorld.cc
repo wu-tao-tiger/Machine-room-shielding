@@ -25,6 +25,10 @@ void ScoringWorld::Construct()
 	setProbe(1528.*mm, 0, 0, ksphere, 1 * cm);
 	setProbe(490*mm, 543*mm, 0, ksphere, 1 * cm);
 	setProbe(-250*mm, 320*mm, 0, ksphere, 1 * cm);
+	//setProbe(500. * mm, 0., 0, ksphere, 1 * cm);
+	//setProbe(0. * mm, 0, 0, ksphere, 1 * cm);
+	//setProbe(-500 * mm, 0, 0, ksphere, 1 * cm);
+	//setProbe(-1000 * mm, 0, 0, ksphere, 1 * cm);
 }
 
 void ScoringWorld::ConstructSD()
@@ -39,7 +43,7 @@ void ScoringWorld::ConstructSD()
 		0.06 * MeV,0.08 * MeV,
 		0.08 * MeV,0.1 * MeV,
 		0.1 * MeV,0.15 * MeV,
-		0.15 * MeV,0.2 * MeV };
+		0.15 * MeV,0.20 * MeV };
 
 	setProbeSD(0, kflux, 11, energy);
 	setProbeSD(1, kflux, 11, energy);
@@ -55,7 +59,7 @@ G4bool ScoringWorld::setProbe(double x,double y, double z, probeType ktype, G4do
 	}
 	else if (ktype == ksphere)
 	{
-		probe_s.push_back(new G4Sphere("probe_s" + std::to_string(probeNum), 0, size, 0, 180 * deg, 0, 360 * deg));
+		probe_s.push_back(new G4Sphere("probe_s" + std::to_string(probeNum), 0, size, 0, 360 * deg, 0, 180 * deg));
 	}
 	else
 	{
@@ -97,5 +101,6 @@ G4bool ScoringWorld::setProbeSD(int probeID, scoreType kScore, int nOfRange, dou
 		probe_MFD->RegisterPrimitive(probe_scorer);
 	}
 	sdmanager->AddNewDetector(probe_MFD);
-	SetSensitiveDetector(probe_l[probeID], probe_MFD);
+	SetSensitiveDetector("probe_l" + std::to_string(probeID), probe_MFD);
+	//SetSensitiveDetector(probe_l[probeID], probe_MFD);
 }

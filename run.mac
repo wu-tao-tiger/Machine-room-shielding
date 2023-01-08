@@ -12,6 +12,15 @@
 /gps/pos/halfx 65 mm
 /gps/pos/halfy 750 mm
 
+#/gps/particle gamma
+#/gps/number 1
+#/gps/energy 200 keV
+#/gps/direction -1 0 0
+#/gps/position 969 0 0 mm
+
+
 /gps/direction 1 0 0
 
-/run/beamOn 3000
+
+
+/run/beamOn 100000

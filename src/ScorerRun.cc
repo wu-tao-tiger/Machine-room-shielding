@@ -39,6 +39,7 @@ void ScorerRun::RecordEvent(const G4Event* anEvent)
 
         if (EvtMap)
         {
+            //G4cout << "yes" << G4endl;
             *fRunMap[i] += *EvtMap;
         } 
     }

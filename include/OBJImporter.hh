@@ -16,16 +16,16 @@
 #include "G4UnitsTable.hh"
 
 
-//自动导入OBJ模型并指定材料，要求构建模型时指定各实体的名称，名称格式为构建历史，例“aaa_bbb_ccc”
-//aaa为bbb的母体,bbb为ccc的母体
-//在实体的材质名称指定物体的材料
-//使用方法 在DetectorConstruction的Construct函数中  输入OBJImporter::modelbulider(文件名，世界的PhysicalVolume)；
+//Automatically import OBJ models and specify materials. It is required to specify the names of entities when building models. The name format is construction history, such as "aaa_bbbb_ccc"
+//Aaa is the parent of bbb and bbb is the parent of ccc
+//Specify the material of the object in the material name of the entity
+//Use the method to enter OBJImporter:: modelbuilder (file name, PhysicalVolume of the world) in the Constructfunction of DetectorConstruction;
 
 namespace OBJImporter
 {
-	//分割字符串函数，输入字符串和分割标识符即可分割 这里默认采用“_”分割
-	//用于将模型构建历史“aaa_bbb_ccc”拆分为“aaa”、“bbb”、“ccc”
-	std::vector<std::string> Stringsplit(std::string str, const const char split)
+	//The split string function can be split by entering a string and a split identifier. The "_" split is used by default here
+	//Used to split the model construction history "aaa_bbbb_ccc" into "aaa", "bbb" and "ccc"
+	std::vector<std::string> Stringsplit(std::string str,const char split)
 	{
 		std::istringstream iss(str);
 		std::string token;
@@ -38,19 +38,19 @@ namespace OBJImporter
 	}
 
 
-	//读取obj文件中的模型构建历史以及对应材料，将构建历史编排成vector的形式，以构建历史vector为key，材料为value组成map输出
-	//uniform用于指定是否采用统一的材料，选true则采用统一材料，materialname则为统一材料的名称，uniform默认为false
+	//Read the model construction history and corresponding materials in the obj file, arrange the construction history in the form of vector, and use the construction history vector as the key and the materials as the value to form a map output
+	//Uniform is used to specify whether unified materials are used. If true is selected, unified materials are used. Materialname is the name of unified materials. Uniform is false by default
 	std::map<std::vector<std::string>, std::string> ParseOBJ(std::string FileName, bool uniform, std::string materialname )
 	{
 		std::cout << std::endl << "**************************************************" << std::endl;
-		std::cout << "开始检索OBj文件中的模型......" << std::endl << std::endl;
+		std::cout << "Start retrieving models in OBj files....." << std::endl << std::endl;
 		std::map<std::vector<std::string>, std::string> ObjInform;
 		std::string LineInform;
 		std::ifstream InputFile;
 		InputFile.open(FileName);
 		if (!InputFile.is_open())
 		{
-			std::cout << "OBJ文件打开失败！" << std::endl;
+			std::cout << "OBJ file opening failed!" << std::endl;
 			system("pause");
 			exit(-1);
 		}
@@ -61,7 +61,7 @@ namespace OBJImporter
 			if (LineInform.substr(0, 2) == "o ")
 			{
 				objhistory = Stringsplit(LineInform.substr(2), '_');
-				std::cout << "成功定位物体"<<*(objhistory.end()-1) << ", 其构建历史为：";
+				std::cout << "Object successfully located "<<*(objhistory.end()-1) << ", its construction history is: ";
 				for (std::vector<std::string>::iterator iter = objhistory.begin(); iter != objhistory.end(); ++iter)
 				{
 					if (iter != objhistory.end() - 1)
@@ -72,7 +72,7 @@ namespace OBJImporter
 				std::cout << ", ";
 				if (uniform)
 				{
-					std::cout << "采用统一的材料: " << materialname << "。" << std::endl;
+					std::cout << "Adopt unified materials: " << materialname << "." << std::endl;
 					ObjInform.insert(std::map<std::vector<std::string>, std::string>::value_type(objhistory, materialname));
 					continue;
 				}
@@ -84,24 +84,24 @@ namespace OBJImporter
 				if (LineInform.substr(0, 7) == "usemtl ")
 				{
 					std::string objmaterial = LineInform.substr(7);
-					std::cout << "并确认材料为：" << objmaterial << "。" << std::endl;
+					std::cout << "And confirm that the materials are:" << objmaterial << "." << std::endl;
 					ObjInform.insert(std::map<std::vector<std::string>, std::string>::value_type(objhistory, objmaterial));
 				}
 				else
 				{
-					std::cout << "但未找到对应材料" << std::endl;
+					std::cout << "But no corresponding material was found" << std::endl;
 				}
 				flag = false;
 			}
 		}
 		InputFile.close();
-		std::cout << std::endl << "检索完毕!" << std::endl;
+		std::cout << std::endl << "Retrieval completed!" << std::endl;
 		std::cout << "**************************************************" << std::endl << std::endl;
 		return ObjInform;
 	}
 
 
-	//用于获得模型构建最深层数
+	//Used to obtain the deepest number of model construction
 	int getNOfLayers(std::map<std::vector<std::string>, std::string> ObjInform)
 	{
 		int currentLayers;
@@ -111,12 +111,12 @@ namespace OBJImporter
 			currentLayers = it.first.size();
 			if (currentLayers > maxLayers)maxLayers = currentLayers;
 		}
-		std::cout << "模型构建最深层数为： " << maxLayers << std::endl;
+		std::cout << "The deepest level of model construction is: " << maxLayers << std::endl;
 		return maxLayers;
 	}
 
 
-	//构建函数，输入obj文件名和导入模型的母体physicalvolume（一般为world），按照构建历史将模型一层一层导入，并指定对应材料
+	//Build the function, input the obj file name and the physical volume (generally the world) of the imported model, import the model layer by layer according to the construction history, and specify the corresponding materials
 	void modelbulider(std::string fileName,G4VPhysicalVolume* pMother, bool uniform = false, std::string materialname = " ",int nscale=1.)
 	{
 
@@ -138,7 +138,7 @@ namespace OBJImporter
 				{
 					Solid[i] = mesh->GetSolid(*((iter->first).end() - 1));
 					LogicalVolume[i] = new G4LogicalVolume(Solid[i], G4Material::GetMaterial(iter->second), *((iter->first).end() - 1));
-					G4cout << "物质：" << LogicalVolume[i]->GetMaterial()->GetName() << "密度：" << LogicalVolume[i]->GetMaterial()->GetDensity() << G4endl;
+					G4cout << "material:" << LogicalVolume[i]->GetMaterial()->GetName() << "Density:" << LogicalVolume[i]->GetMaterial()->GetDensity() << G4endl;
 					G4cout <<G4BestUnit( LogicalVolume[i]->GetMass(false, false, nullptr),"Mass") << G4endl;
 					new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), *((iter->first).end() - 1), LogicalVolume[i], pMother, false, 0, true);
 					i += 1;
@@ -158,7 +158,7 @@ namespace OBJImporter
 
 					Solid[i] = mesh->GetSolid(solidname);
 					LogicalVolume[i] = new G4LogicalVolume(Solid[i], G4Material::GetMaterial(iter->second), *((iter->first).end() - 1));
-					G4cout << "物质：" << LogicalVolume[i]->GetMaterial()->GetName() << "密度：" << LogicalVolume[i]->GetMaterial()->GetDensity() << G4endl;
+					G4cout << "material:" << LogicalVolume[i]->GetMaterial()->GetName() << "Density:" << LogicalVolume[i]->GetMaterial()->GetDensity() << G4endl;
 					G4cout << G4BestUnit(LogicalVolume[i]->GetMass(false, false, nullptr), "Mass") << G4endl;
 					new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), LogicalVolume[i], *((iter->first).end() - 1), G4LogicalVolumeStore::GetInstance()->GetVolume(*(iter->first.end() - 2)), false, 0, true);
 					i += 1;
