@@ -40,7 +40,7 @@
 # Name
 /vis/set/textColour green
 /vis/set/textLayout right
-/vis/scene/add/text2D 0.9 -.9 24 ! ! Tiger
+/vis/scene/add/text2D 0.9 -.9 24 ! ! chl
 #/vis/set/textLayout    # Revert to normal (left adjusted) layout
 #/vis/set/textColour    # Revert to default text colour (blue)
 #
@@ -66,12 +66,19 @@
 #
 # To get nice view
 # "Envelope" is transparent blue to represent water
-/vis/geometry/set/colour world_l 0 0 0 1 .1
+#/vis/geometry/set/colour world 0 0 1 0 .1
 /vis/viewer/set/style surface
 /vis/viewer/set/hiddenMarker true
 /vis/viewer/set/viewpointThetaPhi 120 150
+
+#/vis/geometry/set/visibility tanceqi 0 false
+#
+#/vis/geometry/set/colour human 0 1 0 0 .3
+
 
 
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings
+
+#/control/execute run.mac

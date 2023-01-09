@@ -13,7 +13,4 @@ public:
 
 	G4VPhysicalVolume* Construct();
 
-	void ConstructSDandField();
-
-	void DefineMaterial();
 };
