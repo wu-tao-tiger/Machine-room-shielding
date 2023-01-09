@@ -14,8 +14,6 @@
 #include "G4Sphere.hh"
 #include "G4PSVolumeFlux.hh"
 #include "OBJImporter.hh"
-#include "BiasinglWorld.hh"
-#include "ScoringWorld.hh"
 #include "G4ThreeVector.hh"
 
 
@@ -57,29 +55,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 
 	G4VSolid* world_solid = new G4Box("world_solid", 1.7 * m, 1.1 * m, 0.6 * m);
-	G4LogicalVolume* world_logical = new G4LogicalVolume(world_solid, air, "world_logical");
+	G4LogicalVolume* world_logical = new G4LogicalVolume(world_solid, water, "world_logical");
 	G4VPhysicalVolume* world_physical = new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 0), world_logical, "world_physical", nullptr, false, 0, true);
 
-	G4VSolid* envelope_solid = new G4Box("envelope_solid", 1.6 * m, 1 * m, 0.5 * m);
-	G4LogicalVolume* envelope_logical = new G4LogicalVolume(envelope_solid, air, "envelope_logical");
-	G4VPhysicalVolume* envelope_physical = new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 0), envelope_logical, "envelope_physical", world_logical, false, 0, true);
-
 	world_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
-	envelope_logical->SetVisAttributes(G4VisAttributes::GetInvisible());
 	
-
-
-	OBJImporter::modelbulider("jc.obj", envelope_physical);
-
-	BiasingWorld* bias = new BiasingWorld;
-	bias->setName("envelope_logical");
-	int importancex[6] = { 16,4,4,1,1,4};
-	int importancey[10] = { 16,16,16,4,1,1,4,16,16,16 };
-	int importancez[12] = { 16,16,16,16,4,1,1,4,16,16,16,16 };
-	bias->setNBin(6, importancex, 10, importancey, 12, importancez);
-
-	RegisterParallelWorld(bias);
-	RegisterParallelWorld(new ScoringWorld("score"));
+	OBJImporter::modelbulider("jc.obj", world_physical);
 
 	return world_physical;
 }

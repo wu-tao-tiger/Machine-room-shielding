@@ -6,21 +6,74 @@
 
 /gps/pos/type Plane
 /gps/pos/shape Rectangle
-/gps/pos/centre 969 0 0 mm
+/gps/pos/centre 960 0 0 mm
 /gps/pos/rot1 0 0 1
 /gps/pos/rot2 0 1 0
-/gps/pos/halfx 65 mm
-/gps/pos/halfy 750 mm
-
-#/gps/particle gamma
-#/gps/number 1
-#/gps/energy 200 keV
-#/gps/direction -1 0 0
-#/gps/position 969 0 0 mm
-
-
+/gps/pos/halfx 60 mm
+/gps/pos/halfy 740 mm
 /gps/direction 1 0 0
 
 
+/score/create/probe point 1. cm
+/score/probe/locate -1485 0 0 mm
+/score/probe/locate -1027 -325 0 mm
+/score/probe/locate -310 -325 0 mm
+/score/probe/locate 490 -543 0 mm
+/score/probe/locate 1228 -965 0 mm
+/score/probe/locate 1528 0 0 mm
+/score/probe/locate 1228 965 0 mm
+/score/probe/locate 490 543 0 mm
+/score/probe/locate -310 325 0 mm
+/score/probe/locate -1027 325 0 mm
+/score/probe/locate -1027 0 -325 mm
+/score/probe/locate -310 0 -262 mm
+/score/probe/locate 490 0 -140 mm
+/score/probe/locate 1228 0 355 mm
+/score/probe/locate 1228 0 -355 mm
+/score/probe/locate 970 0 212 mm
+/score/probe/locate -310 0 262 mm
+/score/probe/locate -1027 0 325 mm
 
-/run/beamOn 100000
+
+
+/score/quantity/cellFlux flux.range:0-0.01
+/score/filter/particleWithKineticEnergy range:0-0.01 0 0.01 MeV gamma
+/score/quantity/cellFlux flux.range:0.01-0.015
+/score/filter/particleWithKineticEnergy range:0.01-0.015 0.01 0.015 MeV gamma
+/score/quantity/cellFlux flux.range:0.015-0.02
+/score/filter/particleWithKineticEnergy range:0.015-0.02 0.015 0.02 MeV gamma
+/score/quantity/cellFlux flux.range:0.02-0.03
+/score/filter/particleWithKineticEnergy range:0.02-0.03 0.02 0.03 MeV gamma
+/score/quantity/cellFlux flux.range:0.03-0.04
+/score/filter/particleWithKineticEnergy range:0.03-0.04 0.03 0.04 MeV gamma
+/score/quantity/cellFlux flux.range:0.04-0.05
+/score/filter/particleWithKineticEnergy range:0.04-0.05 0.04 0.05 MeV gamma
+/score/quantity/cellFlux flux.range:0.05-0.06
+/score/filter/particleWithKineticEnergy range:0.05-0.06 0.05 0.06 MeV gamma
+/score/quantity/cellFlux flux.range:0.06-0.08
+/score/filter/particleWithKineticEnergy range:0.06-0.08 0.06 0.08 MeV gamma
+/score/quantity/cellFlux flux.range:0.08-0.1
+/score/filter/particleWithKineticEnergy range:0.08-0.1 0.08 0.1 MeV gamma
+/score/quantity/cellFlux flux.range:0.1-0.15
+/score/filter/particleWithKineticEnergy range:0.1-0.15 0.1 0.15 MeV gamma
+/score/quantity/cellFlux flux.range:0.15-0.2
+/score/filter/particleWithKineticEnergy range:0.15-0.2 0.15 0.2 MeV gamma
+/score/quantity/cellFlux All
+/score/close
+/score/list
+
+
+/run/beamOn 2000000000
+/score/dumpAllQuantitiesToFile point out1.txt
+
+/run/beamOn 2000000000
+/score/dumpAllQuantitiesToFile point out2.txt
+
+/run/beamOn 2000000000
+/score/dumpAllQuantitiesToFile point out3.txt
+
+/run/beamOn 2000000000
+/score/dumpAllQuantitiesToFile point out4.txt
+
+/run/beamOn 2000000000
+/score/dumpAllQuantitiesToFile point out5.txt

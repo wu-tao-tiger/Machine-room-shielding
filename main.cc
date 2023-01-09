@@ -13,14 +13,6 @@
 #include <time.h>
 #include "Randomize.hh"
 
-#include "RunAction.hh"
-#include "ScorerRun.hh"
-#include "BiasinglWorld.hh"
-#include "BiasingOperator.hh"
-#include "BiasingOperation.hh"
-
-
-#include "ScoringWorld.hh"
 
 
 class DetectorConstruction;
